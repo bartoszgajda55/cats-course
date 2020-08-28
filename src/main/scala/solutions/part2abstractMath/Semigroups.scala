@@ -1,4 +1,4 @@
-package part2abstractMath
+package solutions.part2abstractMath
 
 object Semigroups {
 

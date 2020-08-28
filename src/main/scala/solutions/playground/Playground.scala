@@ -1,4 +1,4 @@
-package playground
+package solutions.playground
 
 import cats.Eval
 

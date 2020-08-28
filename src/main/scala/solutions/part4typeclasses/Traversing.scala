@@ -1,4 +1,4 @@
-package part4typeclasses
+package solutions.part4typeclasses
 
 import java.util.concurrent.Executors
 

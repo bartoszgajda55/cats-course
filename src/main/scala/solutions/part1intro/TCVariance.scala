@@ -1,4 +1,4 @@
-package part1intro
+package solutions.part1intro
 
 object TCVariance {
 

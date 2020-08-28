@@ -1,4 +1,4 @@
-package part3datamanipulation
+package solutions.part3datamanipulation
 
 import java.util.concurrent.Executors
 
