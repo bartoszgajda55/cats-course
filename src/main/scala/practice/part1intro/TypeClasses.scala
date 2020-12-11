@@ -1,4 +1,4 @@
-package practice.part1recap
+package practice.part1intro
 
 object TypeClasses {
 
