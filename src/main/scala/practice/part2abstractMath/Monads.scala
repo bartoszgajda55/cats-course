@@ -1,5 +1,7 @@
 package practice.part2abstractMath
 
+import solutions.part2abstractMath.Monads.oneOption
+
 import java.util.concurrent.Executors
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,8 +43,9 @@ object Monads {
    */
   trait MyMonad[M[_]] {
     def pure[A](value: A): M[A]
-
     def flatMap[A, B](ma: M[A])(f: A => M[B]): M[B]
+    def map[A, B](ma: M[A])(f: A => B): M[B] =
+      flatMap(ma)(x => pure(f(x)))
   }
 
   // Cats Monad
@@ -57,6 +60,32 @@ object Monads {
 
   // Generalize
   def getPairs[M[_], A, B](ma: M[A], mb: M[B])(implicit monad: Monad[M]): M[(A, B)] = monad.flatMap(ma)(a => monad.map(mb)(b => (a, b)))
+
+  // Extension methods - weirder imports - pure, flatMap
+  import cats.syntax.applicative._ // pure is here
+  val oneOption = 1.pure[Option] // implicit Monad[Option] will be used => Some(1)
+  val oneList = 1.pure[List] // List(1)
+
+  import cats.syntax.flatMap._ // flatMap is here
+  val oneOptionTransformed = oneOption.flatMap(x => (x + 1).pure[Option])
+
+  // TODO 3: implement the map method in MyMonad
+  // Monads extend Functors
+  val oneOptionMapped = Monad[Option].map(Option(2))(_ + 1)
+  import cats.syntax.functor._ // map is here
+  val oneOptionMapped2 = oneOption.map(_ + 2)
+  // for-comprehensions
+  val composedOptionFor = for {
+    one <- 1.pure[Option]
+    two <- 2.pure[Option]
+  } yield one + two
+
+  // TODO 4: implement a shorter version of getPairs using for-comprehensions
+  def getPairsFor[M[_] : Monad, A, B](ma: M[A], mb: M[B]): M[(A, B)] =
+    for {
+      a <- ma
+      b <- mb
+    } yield (a, b) // same as ma.flatMap(a => mb.map(b => (a, b)))
 
   def main(args: Array[String]): Unit = {
 
